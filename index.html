@@ -9,31 +9,35 @@
 </head>
 <body>
      <div class="calculator">
-          <div class="calculator-display" id="displayId"> <div id="operation-result"></div></div>
-          <div class="calculator-clear">               
-               <button id="cleanDisplay">C</button>                    
-               <button id="cleanDigit">Del</button>
-          </div>
+          <div class="calculator-display">
+               <div id="operation-accumulator" class="accumulator"></div>
+               <div id="operation-result" class="result" hidden></div>
+           </div>
           <div class="calculator-keys"> 
-               <button id="key7">7</button>
-               <button id="key8">8</button>
-               <button id="key9">9</button>
-               <button id="operatorDivision">÷</button>
+               <button id="invert">+/-</button>  
+               <button id="cleanCalc" onclick="cleanCurrentEntry()">CE</button>           
+               <button id="cleanDisplay" onclick="cleanAll()">C</button>                    
+               <button id="cleanDigit" onclick="cleanDigit()">Del</button>
+
+               <button id="key7" onclick="addNumber(7)">7</button>
+               <button id="key8" onclick="addNumber(8)">8</button>
+               <button id="key9" onclick="addNumber(9)">9</button>
+               <button id="operatorDivision" onclick="calcAction('/')">÷</button>
                
-               <button id="key4">4</button>
-               <button id="key5">5</button>
-               <button id="key6">6</button>
-               <button id="operatormultiplication">*</button>
+               <button id="key4" onclick="addNumber(4)">4</button>
+               <button id="key5" onclick="addNumber(5)">5</button>
+               <button id="key6" onclick="addNumber(6)">6</button>
+               <button id="operatormultiplication" onclick="calcAction('*')">*</button>
                
-               <button id="key1">1</button>
-               <button id="key2">2</button>
-               <button id="key3">3</button>
-               <button id="operatorSubtraction">-</button>
+               <button id="key1" onclick="addNumber(1)">1</button>
+               <button id="key2" onclick="addNumber(2)">2</button>
+               <button id="key3" onclick="addNumber(3)">3</button>
+               <button id="operatorSubtraction" onclick="calcAction('-')">-</button>
                                    
-               <button id="keyDot">.</button>
-               <button id="key0">0</button>
-               <button id="equal">=</button>
-               <button id="operatorAddition" value="+">+</button>
+               <button id="keyDot" onclick="addComma()">,</button>
+               <button id="key0" onclick="addNumber(0)">0</button>
+               <button id="equal" onclick="result()">=</button>
+               <button id="operatorAddition" onclick="calcAction('+')">+</button>
                </div>
           </div>
      </div>

@@ -1,40 +1,121 @@
-const display = document.getElementById('operation-result');
+let count = [];
+let saveAction;
 
-//seleciona todas as teclas de numeros
-const numbers = document.querySelectorAll('[id*=key]');
-const operators = document.querySelectorAll('[id*=operator]');
+const MAX_VISOR_CHAR = 10;
 
-const cleanDisplay = document.getElementById('cleanDisplay');
-const cleanDigit = document.getElementById('cleanDigit');
+const displayResult = document.getElementById("operation-result");
+const displayAccumulator = document.getElementById("operation-accumulator");
 
-const result = document.getElementById('equal');
+function addNumber(num) {
+    displayResult.removeAttribute("hidden")
+    if (displayResult.innerHTML.length < MAX_VISOR_CHAR) {
+        displayResult.innerHTML += num;
+    }
 
-result.addEventListener("click", clickOperator);
+}
 
-function clickOperator(){
-    if(display.innerHTML) {
-            display.innerHTML = eval(display.innerHTML)
+function cleanCurrentEntry() {
+    displayResult.innerHTML = "";
+}
+
+function cleanDigit() {
+    let valueResult = displayResult.innerHTML;
+    displayResult.innerHTML = valueResult.substring(0, valueResult.length -1);
+}
+
+function cleanAll() {
+    displayResult.innerHTML = ""
+    displayAccumulator.innerHTML = ""
+    count = []
+}
+
+function processAction(num1, num2, action) {
+    switch (action) {
+        case '+': return num1 + num2
+        case '-': return num1 - num2
+        case '*': return num1 * num2
+        case '/': return num1 / num2
     }
 }
 
-//limpa digito
-cleanDigit.addEventListener('click', () => {    
-    let valueResult = display.textContent;
-    display.textContent = valueResult.substring(0, valueResult.length -1);
-    //console.log("funcao remove: " + display.textContent);
-})
+function addComma() {
+    var currentNumber = display.innerHTML
 
-//limpa display
-cleanDisplay.addEventListener('click', () => display.textContent = "");
+    if (currentNumber == ''){
+        displayResult.removeAttribute("hidden")
+        displayResult.innerHTML = "0."
+    }
+    else if (!currentNumber.includes(".")) {
+        displayResult.innerHTML += "."
+    }
 
-//atualiza o display com o valor capturado do click
-const updateDisplay = (text) => {
-        display.textContent += text;
 }
 
-//captura o valor do click
-const insertClick = (event) => updateDisplay(event.target.textContent);
+function calcAction(action) {
+    var currentNumber = displayResult.innerHTML
 
-//adiciona um evento de click para toda tecla de numero
-numbers.forEach (number => number.addEventListener('click', insertClick));
-operators.forEach (operator => operator.addEventListener('click', insertClick))
+    if (currentNumber.length === 0) { return }
+
+    count.push(Number(displayResult.innerHTML))
+
+    if (currentNumber.split('')[currentNumber.length - 1] == '.'){
+        displayAccumulator.removeAttribute("hidden")
+        displayAccumulator.innerHTML += ` ${displayResult.innerHTML}0 ${action}`
+    }
+    else{
+        displayAccumulator.removeAttribute("hidden")
+        displayAccumulator.innerHTML += ` ${displayResult.innerHTML} ${action}`
+    }
+
+    displayResult.innerHTML = ""
+
+    count.push(action)
+}
+
+function result() {
+    currentAccum = displayAccumulator.innerHTML
+    currentNumber = displayResult.innerHTML
+
+    if (currentAccum[currentAccum.length - 1] === "=" && currentNumber.length > 0) {
+        displayResult.innerHTML = processAction(Number(currentNumber), Number(currentNumber), saveAction).toString().substring(0, MAX_VISOR_CHAR)
+    }
+
+    if (count.length === 0) { return }
+
+    count.push(Number(displayResult.innerHTML))
+    displayAccumulator.innerHTML += ` ${displayResult.innerHTML} =`
+    proccessResult()
+}
+
+function proccessResult() {
+    let action = null
+    let current = null
+
+    let total = 0;
+
+    if (isNaN(count[count.length - 1])) {
+        count.pop()
+    }
+
+    count.forEach(n => {
+        if (!isNaN(n)) {
+            if (current == null) {
+                current = n
+            } else {
+                total += processAction(current, n, action)
+                current = null
+            }
+        } else {
+            action = n
+            saveAction = n
+        }
+    })
+
+    if (current != null) {
+        total = processAction(total, current, action)
+    }
+
+    displayResult.innerHTML = total.toString().substring(0, MAX_VISOR_CHAR)
+    count = []
+
+}

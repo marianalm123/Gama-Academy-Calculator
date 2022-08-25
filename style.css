@@ -12,12 +12,6 @@
     border-radius: 5px;
     box-shadow: 0 0 15px #805c65;
 }
-.calculator-clear {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-    padding-bottom: 10px;
-}
 
 .calculator-keys {
     display: grid;
@@ -39,8 +33,25 @@
     border-radius: 10px;
 
     color: white;
-    font: normal 4rem serif;
+    font: normal 2rem serif;
     overflow: hidden;
+}
+
+.result {
+    width: 100%;
+    height: 50%;
+    font: normal 2rem serif;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.accumulator {
+    width: 100%;
+    height: 50%;
+    font: normal 1rem serif;
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 5px;
 }
 
 .calculator button {
