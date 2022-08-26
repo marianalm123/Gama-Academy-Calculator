@@ -1,6 +1,7 @@
 let count = [];
 let saveAction;
 
+
 const MAX_VISOR_CHAR = 10;
 
 const displayResult = document.getElementById("operation-result");
